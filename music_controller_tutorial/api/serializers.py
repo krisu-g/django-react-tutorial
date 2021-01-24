@@ -1,12 +1,14 @@
 from rest_framework import serializers
-from .models import Room
+from .models import Room, generate_unique_code
 
 
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-<<<<<<< HEAD
         fields = ('id', 'code', 'host', 'guest_can_pause', 'votes_to_skip', 'created_at')
-=======
-        fields = ('id', 'code', 'host', 'guest_can_pause', 'votes_to_skip', 'created_at')
->>>>>>> 5d854c0 (npm init, etc.)
+
+
+class CreateRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = ('guest_can_pause', 'votes_to_skip')
