@@ -8,4 +8,7 @@ from .models import Room
 class RoomView(generics.ListAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d854c0 (npm init, etc.)
