@@ -1,9 +1,5 @@
 venv/
-<<<<<<< HEAD
-.vscode/
-=======
 .vscode/
 .node
 node_modules/
 __pycache__/
->>>>>>> 5d854c0 (npm init, etc.)
