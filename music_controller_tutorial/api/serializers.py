@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Room#, generate_unique_code
+from .models import Room  #, generate_unique_code
 
 
 class RoomSerializer(serializers.ModelSerializer):

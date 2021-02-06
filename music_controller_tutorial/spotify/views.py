@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from requests import Request, post
-from .util import update_or_create_user_tokens, is_spotify_authenticated, execute_spotify_api_request
+from .util import update_or_create_user_tokens, is_spotify_authenticated, execute_spotify_api_request, pause_song, play_song
 from api.models import Room
 
 
@@ -59,7 +59,9 @@ class IsAuthenticated(APIView):
 class CurrentSong(APIView):
     def get(self, request, format=None):
         room_code = self.request.session.get('room_code')
+        print("self.request.session.get('room_code'): ", room_code)
         room = Room.objects.filter(code=room_code)
+        print('Room.objects.filter(code=room_code): ', room)
         if room.exists():
             room = room[0]
         else:
@@ -82,7 +84,7 @@ class CurrentSong(APIView):
 
         for i, artist in enumerate(item.get('artists')):
             if i > 0:
-                artist_string += ", "
+                artist_string += ', '
             name = artist.get('name')
             artist_string += name
 
@@ -98,3 +100,25 @@ class CurrentSong(APIView):
         }
 
         return Response(song, status=status.HTTP_200_OK)
+
+
+class PauseSong(APIView):
+    def put(self, response, format=None):
+        room_code = self.request.session.get('room_code')
+        room = Room.objects.filter(code=room_code)[0]
+        if self.request.session.session_key == room.host or room.guest_can_pause:
+            pause_song(room.host)
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        return Response({}, status=status.HTTP_403_FORBIDDEN)
+
+
+class PlaySong(APIView):
+    def put(self, response, format=None):
+        room_code = self.request.session.get('room_code')
+        room = Room.objects.filter(code=room_code)[0]
+        if self.request.session.session_key == room.host or room.guest_can_pause:
+            play_song(room.host)
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        return Response({}, status=status.HTTP_403_FORBIDDEN)

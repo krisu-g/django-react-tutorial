@@ -8,7 +8,7 @@ from django.http import JsonResponse
 
 
 # Create your views here.
-class RoomView(generics.ListAPIView):
+class RoomsView(generics.ListAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 
@@ -41,13 +41,16 @@ class JoinRoom(APIView):
         if code is not None:
             room_result = Room.objects.filter(code=code)
             if len(room_result) > 0:
-                room = room_result[0]
+                # room = room_result[0]
                 self.request.session['room_code'] = code
                 return Response({'message': 'Room Joined!'}, status=status.HTTP_200_OK)
 
             return Response({'Bad Request': 'Invalid Room Code'}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({'Bad Request': 'Invalid post data, did not find a code key'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {'Bad Request': 'Invalid post data, did not find a code key'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class CreateRoomView(APIView):
