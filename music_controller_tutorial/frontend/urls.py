@@ -5,6 +5,7 @@ app_name = 'frontend'
 
 urlpatterns = [
     path('', index, name=''),
+    path('info', index, name='info'),
     path('join', index),
     path('create', index),
     path('room/<str:roomCode>', index),
